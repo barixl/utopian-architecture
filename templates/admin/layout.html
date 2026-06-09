@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}PerfectoAdmin{% endblock %}</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Remix Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" integrity="sha512-XcIsjKMcuVe0Ucj/xgIXQnytNwBttJbNjltBV18IOnru2lDPe9KRRyvCXw6Y5H415vbBLRm8+q6fmLUU7DfO6Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Custom Admin CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}?v=1.1">
+</head>
+<body class="admin-body">
+
+    <!-- Header -->
+    <header class="admin-header">
+        <div class="admin-header-left">
+            <button class="admin-sidebar-toggle" id="sidebarToggle">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <a href="{{ url_for('admin_dashboard') }}" class="admin-brand">
+                <i class="fa-solid fa-layer-group"></i> <span>PerfectoAdmin</span>
+            </a>
+        </div>
+        <div class="admin-header-actions">
+            <a href="{{ url_for('home') }}" target="_blank" class="admin-btn">
+                <i class="fa-solid fa-globe"></i> <span>View Site</span>
+            </a>
+            <a href="{{ url_for('admin_logout') }}" class="admin-btn admin-btn-accent">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Logout</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <ul class="admin-menu">
+                <li class="admin-menu-item">
+                    <a href="{{ url_for('admin_dashboard') }}" class="admin-menu-link {% if request.endpoint == 'admin_dashboard' %}active{% endif %}">
+                        <i class="fa-solid fa-address-book"></i> Contacts
+                    </a>
+                </li>
+                <li class="admin-menu-item">
+                    <a href="{{ url_for('admin_slider') }}" class="admin-menu-link {% if request.endpoint == 'admin_slider' %}active{% endif %}">
+                        <i class="fa-solid fa-image"></i> Hero Section
+                    </a>
+                </li>
+                 <li class="admin-menu-item">
+                    <a href="{{ url_for('admin_catalog') }}" class="admin-menu-link {% if request.endpoint == 'admin_catalog' %}active{% endif %}">
+                        <i class="fa-solid fa-couch"></i> Catalog
+                    </a>
+                </li>
+                <li class="admin-menu-item">
+                    <a href="#" class="admin-menu-link">
+                        <i class="fa-regular fa-images"></i> Gallery
+                    </a>
+                </li>
+
+               
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <!-- JS for Mobile Sidebar Toggle & Auto-hide Alerts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile Sidebar Toggle
+            const toggleBtn = document.getElementById('sidebarToggle');
+            const sidebar = document.querySelector('.admin-sidebar');
+            
+            if (toggleBtn && sidebar) {
+                toggleBtn.addEventListener('click', function() {
+                    sidebar.classList.toggle('show');
+                });
+            }
+
+            // Auto-hide alert messages after 2 seconds
+            const alerts = document.querySelectorAll('.admin-alert');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    alert.style.transition = 'opacity 0.5s ease, transform 0.5s ease, margin 0.5s ease, padding 0.5s ease, height 0.5s ease';
+                    alert.style.opacity = '0';
+                    alert.style.transform = 'translateY(-10px)';
+                    setTimeout(() => {
+                        alert.remove();
+                    }, 500);
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>

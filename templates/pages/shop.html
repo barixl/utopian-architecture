@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Shop – Utopia Furniture &amp; D&eacute;cor{% endblock %}
+
+{% block body_class %}bg-secondarylight{% endblock %}
+
+{% block content %}
+  <section class="py-6 text-center" style="min-height:60vh;display:flex;align-items:center;justify-content:center;">
+    <div>
+      <h2>Shop Coming Soon</h2>
+      <p>Our furniture &amp; decor shop is being curated. Check back soon.</p>
+      <a href="{{ url_for('home') }}" class="btn1">Back to Home <i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+    </div>
+  </section>
+{% endblock %}

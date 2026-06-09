@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login – PerfectoAdmin</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Admin CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}?v=1.1">
+</head>
+<body class="admin-body">
+
+    <div class="admin-login-wrapper">
+        <div class="admin-login-card">
+            <div class="admin-login-title">
+                <h2><i class="fa-solid fa-layer-group" style="color: var(--admin-accent);"></i> PerfectoAdmin</h2>
+            </div>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="admin-alert admin-alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form method="POST">
+                <div class="admin-form-group">
+                    <i class="fa-solid fa-user admin-input-icon"></i>
+                    <input type="text" name="username" class="admin-form-control has-icon" placeholder="Username" required autofocus>
+                </div>
+                <div class="admin-form-group">
+                    <i class="fa-solid fa-lock admin-input-icon"></i>
+                    <input type="password" name="password" id="password" class="admin-form-control has-icon has-icon-right" placeholder="Password" required>
+                    <i class="fa-regular fa-eye admin-input-icon-right" id="togglePassword"></i>
+                </div>
+                <button type="submit" class="admin-btn admin-btn-accent admin-btn-block">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
+
+        togglePassword.addEventListener('click', function (e) {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        // Auto-hide alert messages after 2 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const alerts = document.querySelectorAll('.admin-alert');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    alert.style.transition = 'opacity 0.5s ease, transform 0.5s ease, margin 0.5s ease, padding 0.5s ease, height 0.5s ease';
+                    alert.style.opacity = '0';
+                    alert.style.transform = 'translateY(-10px)';
+                    setTimeout(() => {
+                        alert.remove();
+                    }, 500);
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>

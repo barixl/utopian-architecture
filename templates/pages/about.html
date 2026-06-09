@@ -1,0 +1,612 @@
+{% extends 'base.html' %}
+
+{% block title %}About Us – Utopia Furniture &amp; D&eacute;cor{% endblock %}
+
+{% block content %}
+    <!-- Breadcrumb Section Starts -->
+    <section class="breadcrumb position-relative mb-0">
+      <div class="overlay"></div>
+      <div
+        class="container position-absolute top-50 start-50 translate-middle text-center"
+      >
+        <div class="breadcrumb-inner mt-8">
+          <h2 class="grey mb-0">About Us</h2>
+          <p class="mb-0 text-light">
+            <a href="{{ url_for('home') }}" class="text-decoration-none secondary">
+              Home
+            </a>
+            <span class="mx-2">&rarr;</span> About Us
+          </p>
+        </div>
+      </div>
+    </section>
+    <!-- Breadcrumb Section Ends -->
+
+    <!-- About Us Section Starts -->
+    <section class="about position-relative z-0 pt-8">
+      <div class="container pt-lg-5">
+        <div class="about-inner border-dashed pb-6 mb-1 position-relative">
+          <span class="heading-clip">About Us</span>
+          <div class="row gx-lg-5 gy-5 align-items-center">
+            <div class="col-lg-6">
+              <div class="about-left text-center text-lg-start">
+                <div class="about-info">
+                  <h2 class="mb-3">
+                    Welcome to Utopia
+                    <span class="secondary d-block">Furniture &amp; D&eacute;cor</span>
+                  </h2>
+                  <p>
+                    Founded in 2021 by <strong class="secondary">Architect Abdul Qadir</strong>, Utopia Furniture &amp; D&eacute;cor is a premier interior design and furniture customization firm based in Muzaffarnagar, UP. Backed by international and Gulf project experience, we blend global design standards with Indian sensibilities to create stunning, personalized spaces.
+                  </p>
+                  <p>
+                    From luxury residences to modern commercial spaces across Delhi NCR and Uttarakhand, we deliver complete turnkey solutions from concept to execution—always prioritizing quality craftsmanship and customer satisfaction.
+                  </p>
+                </div>
+                <div class="about-signature border-dashed mb-4 pb-4">
+                  <span class="teko h6 primary d-block"
+                    >Abdul Qadir, Founder</span
+                  >
+                </div>
+                <div class="about-btns">
+                  <ul class="d-flex justify-content-between align-items-center">
+                    <li>
+                      <a href="{{ url_for('contact') }}" class="btn-primary"
+                        >Book Consultation</a
+                      >
+                    </li>
+                    <li class="about-tel">
+                      <ul class="d-flex gap-3 align-items-center">
+                        <li>
+                          <i
+                            class="fa fa-volume-control-phone text-center rounded-circle white bg-secondary"
+                            aria-hidden="true"
+                          ></i>
+                        </li>
+                        <li class="teko fw-medium primary h6 mb-0">
+                          Have any questions?
+                          <span class="d-block secondary h3 mb-0">
+                            <a
+                              href="tel:+917351949490"
+                              class="text-decoration-none secondary"
+                            >
+                              +91 73519 49490
+                            </a>
+                          </span>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="about-right p-5 pb-0">
+                <img
+                  src="{{ url_for('static', filename='img/about/about-main.jpg') }}"
+                  alt="about img"
+                  class="w-100"
+                />
+              </div>
+              <div
+                class="about-qoute p-4 bg-primary w-75 white position-relative"
+                style="margin-top: -100px"
+              >
+                <p class="ps-3 border-start border-4 border-secondary mb-0">
+                  "Utopia completely transformed our home. The attention to
+                  detail, the choice of materials, and the overall design
+                  exceeded everything we imagined. Truly world-class work."
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- About Us Section Ends -->
+
+    <!-- Vision & Mission Section Starts -->
+    <section class="process bg-primary">
+      <div class="container">
+        <div class="process-inner position-relative">
+          <span
+            class="heading-clip z-0 w-100 text-center top-50 start-50 translate-middle"
+            >Our Values</span
+          >
+          <div class="row gx-md-5 position-relative gy-4 justify-content-center">
+            <div class="col-lg-6 col-md-6">
+              <div class="process-box grey h-100">
+                <span class="h1 mb-0"><i class="fa fa-eye white" aria-hidden="true"></i></span>
+                <h3 class="white mt-3">Our Vision</h3>
+                <p class="mb-0">
+                  To become a trusted name in interior design and customized furniture by delivering exceptional quality, innovative designs, and outstanding customer experiences.
+                </p>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+              <div class="process-box grey h-100">
+                <span class="h1 mb-0"><i class="fa fa-bullseye white" aria-hidden="true"></i></span>
+                <h3 class="white mt-3">Our Mission</h3>
+                <p class="mb-0">
+                  To transform spaces into beautiful, functional, and inspiring environments through creative design, premium materials, and professional execution.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Vision & Mission Section Ends -->
+
+    <!-- Why Us Section Starts -->
+    <section class="why-us">
+      <div class="container">
+        <div class="why-us-inner position-relative pt-5">
+          <span class="heading-clip">Why Us</span>
+          <div class="row gx-lg-5 gy-5 align-items-center">
+            <div class="col-lg-6 order-lg-1 order-2">
+              <div class="why-us-left">
+                <div class="why-us-image me-lg-4">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <img src="{{ url_for('static', filename='img/about/about-2.jpg') }}" alt="interior" />
+                    </div>
+                    <div class="col-md-6">
+                      <img
+                        src="{{ url_for('static', filename='img/services/vintage.jpg') }}"
+                        alt="interior"
+                        class="mt-5"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="why-us-progressbar p-4 bg-primary w-md-75 ms-auto position-relative"
+                  style="margin-top: -100px"
+                >
+                  <ul>
+                    <li class="mb-4">
+                      <span class="teko h6 white">Idea &amp; Concept</span>
+                      <div class="progress-bar-section mt-2">
+                        <div
+                          class="progress rounded-0 bg-white position-relative overflow-visible"
+                          role="progressbar"
+                          aria-label="Basic example"
+                          aria-valuenow="90"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                          style="height: 7px"
+                        >
+                          <div
+                            class="progress-bar bg-secondary position-relative overflow-visible"
+                            style="width: 90%"
+                          >
+                            <div
+                              class="percentage-wrapper position-absolute rounded-circle p-2 bg-secondary white d-flex align-items-center justify-content-between"
+                            >
+                              <span class="progress-num" data-val="90"></span
+                              ><span>%</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="mb-4">
+                      <span class="teko h6 white">Architecture</span>
+                      <div class="progress-bar-section mt-2">
+                        <div
+                          class="progress rounded-0 bg-white position-relative overflow-visible"
+                          role="progressbar"
+                          aria-label="Basic example"
+                          aria-valuenow="90"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                          style="height: 7px"
+                        >
+                          <div
+                            class="progress-bar bg-secondary position-relative overflow-visible"
+                            style="width: 94%"
+                          >
+                            <div
+                              class="percentage-wrapper position-absolute rounded-circle p-2 bg-secondary white d-flex align-items-center justify-content-between"
+                            >
+                              <span class="progress-num" data-val="94"></span
+                              ><span>%</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <span class="teko h6 white">Accuracy &amp; Execution</span>
+                      <div class="progress-bar-section mt-2">
+                        <div
+                          class="progress rounded-0 bg-white position-relative overflow-visible"
+                          role="progressbar"
+                          aria-label="Basic example"
+                          aria-valuenow="90"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                          style="height: 7px"
+                        >
+                          <div
+                            class="progress-bar bg-secondary position-relative overflow-visible"
+                            style="width: 85%"
+                          >
+                            <div
+                              class="percentage-wrapper position-absolute rounded-circle p-2 bg-secondary white d-flex align-items-center justify-content-between"
+                            >
+                              <span class="progress-num" data-val="85"></span
+                              ><span>%</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 order-lg-2 order-1">
+              <div class="why-us-right">
+                <div
+                  class="why-us-title mb-4 pb-4 border-dashed text-center text-lg-start"
+                >
+                  <span class="teko h5 secondary">Why Choose Us</span>
+                  <div
+                    class="sperator bg-secondary mt-1 mb-2"
+                    style="width: 40px; height: 2px"
+                  ></div>
+                  <h2 class="mb-3">
+                    Excellence in Every
+                    <span class="secondary">Detail</span>
+                  </h2>
+                  <p class="mb-0">
+                    We are dedicated to providing the highest level of interior design and furniture customization. Here are just a few reasons why our clients trust us with their spaces:
+                  </p>
+                </div>
+
+                <div class="feature-lisiting">
+                  <div class="row gy-3">
+                    <div class="col-md-6">
+                      <div class="feature-box p-3 border border-2 border-grey h-100 d-flex align-items-center bg-white">
+                        <i class="fa fa-check-circle secondary h2 mb-0 me-3"></i>
+                        <h6 class="mb-0" style="font-size: 18px;">Experienced Architectural &amp; Interior Design Team</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="feature-box p-3 border border-2 border-grey h-100 d-flex align-items-center bg-white">
+                        <i class="fa fa-check-circle secondary h2 mb-0 me-3"></i>
+                        <h6 class="mb-0" style="font-size: 18px;">International &amp; Gulf Project Experience</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="feature-box p-3 border border-2 border-grey h-100 d-flex align-items-center bg-white">
+                        <i class="fa fa-check-circle secondary h2 mb-0 me-3"></i>
+                        <h6 class="mb-0" style="font-size: 18px;">Customized Design Solutions</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="feature-box p-3 border border-2 border-grey h-100 d-flex align-items-center bg-white">
+                        <i class="fa fa-check-circle secondary h2 mb-0 me-3"></i>
+                        <h6 class="mb-0" style="font-size: 18px;">Premium Quality Furniture Manufacturing</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="feature-box p-3 border border-2 border-grey h-100 d-flex align-items-center bg-white">
+                        <i class="fa fa-check-circle secondary h2 mb-0 me-3"></i>
+                        <h6 class="mb-0" style="font-size: 18px;">Complete Turnkey Interior Solutions</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="feature-box p-3 border border-2 border-grey h-100 d-flex align-items-center bg-white">
+                        <i class="fa fa-check-circle secondary h2 mb-0 me-3"></i>
+                        <h6 class="mb-0" style="font-size: 18px;">Timely Project Delivery</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="feature-box p-3 border border-2 border-grey h-100 d-flex align-items-center bg-white">
+                        <i class="fa fa-check-circle secondary h2 mb-0 me-3"></i>
+                        <h6 class="mb-0" style="font-size: 18px;">Competitive Pricing</h6>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="feature-box p-3 border border-2 border-grey h-100 d-flex align-items-center bg-white">
+                        <i class="fa fa-check-circle secondary h2 mb-0 me-3"></i>
+                        <h6 class="mb-0" style="font-size: 18px;">Personalized Customer Service</h6>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Why Us Section Starts -->
+
+    <!-- Review Section Starts -->
+    <section class="review pt-0">
+      <div class="container">
+        <div class="review-inner pt-4 position-relative">
+          <span class="heading-clip text-center text-lg-start w-100">
+            Reviews
+          </span>
+          <div class="row gy-5 align-items-center">
+            <div class="col-lg-4">
+              <div class="review-left text-center text-lg-start">
+                <span class="teko h5 secondary">Our Testimonials</span>
+                <div
+                  class="sperator bg-secondary mt-1 mb-2"
+                  style="width: 40px; height: 2px"
+                ></div>
+                <h2 class="mb-3">
+                  Check What They Are
+                  <span class="secondary">Talking About</span>
+                </h2>
+                <p>
+                  Our clients are our greatest achievement. From first-time
+                  homeowners to seasoned business owners, every person who works
+                  with Utopia leaves with a smile.
+                </p>
+                <p class="mb-0">
+                  Here is what some of them have to say about their experience
+                  with us.
+                </p>
+              </div>
+            </div>
+            <div class="col-lg-8">
+              <div class="review-right">
+                <div class="review-slider">
+                  <!-- Testimonial 1 -->
+                  <div class="slide mx-3">
+                    <div
+                      class="review-box px-4 py-5 bg-primary border border-2 border-secondary text-center"
+                    >
+                      <div class="review-icon h2 mb-3 white">
+                        <i class="fa fa-quote-left" aria-hidden="true"></i>
+                      </div>
+                      <div class="review-detail white">
+                        <p class="fw-normal fst-italic" style="font-size: 18px">
+                          "Working with Utopia was a truly remarkable
+                          experience. They listened carefully, designed
+                          beautifully, and delivered our dream home on time and
+                          within budget."
+                        </p>
+                        <div
+                          class="sperator bg-secondary my-4 mx-auto"
+                          style="width: 40px; height: 2px"
+                        ></div>
+                        <p class="secondary mb-0">
+                          <span class="d-block h5 white teko mb-1">
+                            Ritu Sharma
+                          </span>
+                          ★★★★★ | Homeowner, Muzaffarnagar
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Testimonial 2 -->
+                  <div class="slide mx-3">
+                    <div
+                      class="review-box px-4 py-5 bg-primary border border-2 border-secondary text-center"
+                    >
+                      <div class="review-icon h2 white mb-3">
+                        <i class="fa fa-quote-left" aria-hidden="true"></i>
+                      </div>
+                      <div class="review-detail white">
+                        <p class="fw-normal fst-italic" style="font-size: 18px">
+                          "The team at Utopia redesigned our office space and
+                          the transformation has been incredible. Productivity
+                          is up, clients are impressed."
+                        </p>
+                        <div
+                          class="sperator bg-secondary my-4 mx-auto"
+                          style="width: 40px; height: 2px"
+                        ></div>
+                        <p class="secondary mb-0">
+                          <span class="d-block h5 white teko mb-1">
+                            Kelvin Martin
+                          </span>
+                          ★★★★★ | Director, Delhi NCR
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Testimonial 3 -->
+                  <div class="slide mx-3">
+                    <div
+                      class="review-box px-4 py-5 bg-primary border border-2 border-secondary text-center"
+                    >
+                      <div class="review-icon h2 white mb-3">
+                        <i class="fa fa-quote-left" aria-hidden="true"></i>
+                      </div>
+                      <div class="review-detail white">
+                        <p class="fw-normal fst-italic" style="font-size: 18px">
+                          "Amazing attention to detail and premium finishing.
+                          Utopia transformed our interiors exactly the way we
+                          imagined."
+                        </p>
+                        <div
+                          class="sperator bg-secondary my-4 mx-auto"
+                          style="width: 40px; height: 2px"
+                        ></div>
+                        <p class="secondary mb-0">
+                          <span class="d-block h5 white teko mb-1">
+                            Aman Verma
+                          </span>
+                          ★★★★★ | Villa Owner
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Review Section Ends -->
+
+    <!-- Team Section Starts -->
+    <section class="teams">
+      <div class="container">
+        <div class="teams-inner">
+          <div
+            class="teams-title position-relative pt-5 mb-5 text-center text-lg-start"
+          >
+            <span class="heading-clip">Our Team</span>
+            <div class="row align-items-center gy-3">
+              <div class="col-lg-6">
+                <div class="teams-title-left">
+                  <h2 class="mb-0">
+                    Meet Our <span class="secondary">Expert Leadership</span>
+                  </h2>
+                  <p class="mb-0">
+                    Behind every stunning space is a dedicated team of creative
+                    professionals. Our designers, architects, and project
+                    managers work together to bring your vision to life — with
+                    skill, passion, and attention to detail.
+                  </p>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="teams-title-right text-lg-end">
+                  <a
+                    href="https://wa.me/917351949490?text=Hello%20Utopia%20Team!%20I%20would%20like%20to%20schedule%20a%20consultation%20for%20interior%20design%20services."
+                    target="_blank"
+                    class="btn-primary"
+                  >
+                    Book Consultation
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="teams-body">
+            <div class="row gy-4">
+              <div class="col-lg-3 col-md-6">
+                <div
+                  class="teams-box p-2 border border-2 border-grey position-relative overflow-hidden"
+                >
+                  <div class="teams-image">
+                    <img src="https://placehold.co/400x500" alt="teams image" />
+                  </div>
+                  <div
+                    class="teams-info position-absolute text-center mx-auto w-100 white pb-4"
+                  >
+                    <h5 class="mb-0 white">Nelly Gongunk</h5>
+                    <span>Managing Director</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6">
+                <div
+                  class="teams-box p-2 border border-2 border-grey position-relative overflow-hidden mt-md-4"
+                >
+                  <div class="teams-image">
+                    <img src="https://placehold.co/400x500" alt="teams image" />
+                  </div>
+                  <div
+                    class="teams-info position-absolute text-center mx-auto w-100 white pb-4"
+                  >
+                    <h5 class="mb-0 white">Ralph Waldo</h5>
+                    <span>Officer</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6">
+                <div
+                  class="teams-box p-2 border border-2 border-grey position-relative overflow-hidden"
+                >
+                  <div class="teams-image">
+                    <img src="https://placehold.co/400x500" alt="teams image" />
+                  </div>
+                  <div
+                    class="teams-info position-absolute text-center mx-auto w-100 white pb-4"
+                  >
+                    <h5 class="mb-0 white">Natalia Ford</h5>
+                    <span>Architect</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6">
+                <div
+                  class="teams-box p-2 border border-2 border-grey position-relative overflow-hidden mt-md-4"
+                >
+                  <div class="teams-image">
+                    <img src="https://placehold.co/400x500" alt="teams image" />
+                  </div>
+                  <div
+                    class="teams-info position-absolute text-center mx-auto w-100 white pb-4"
+                  >
+                    <h5 class="mb-0 white">Antonio Ulag</h5>
+                    <span>Architect </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Team Section Ends -->
+
+    <!-- Appointment Section Starts -->
+    <div class="appointment py-5 bg-secondarylight">
+      <div class="container">
+        <div class="appointment-inner">
+          <div class="row align-items-center gy-4">
+            <div class="col-lg-3 col-md-4">
+              <div class="appointment-left">
+                <ul
+                  class="d-flex align-items-center justify-content-center justify-content-lg-start"
+                >
+                  <li class="me-3 pe-3 border-end border-2 border-white">
+                    <img
+                      src="{{ url_for('static', filename='img/icons/chat.png') }}"
+                      alt="chat"
+                      style="height: 44px; width: 44px"
+                    />
+                  </li>
+                  <li class="teko">
+                    <span class="h6 primary mb-0">Consult Our Studio</span>
+                    <span class="d-block h3 mb-0 text-dark">
+                      <a
+                        href="tel:+917351949490"
+                        class="text-decoration-none text-dark"
+                      >
+                        +91 7351949490
+                      </a>
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-8">
+              <div class="appointment-center">
+                <p class="mb-0">
+                  Ready to transform your space? Meet with our principal
+                  designers to share your vision and start crafting a home that
+                  is uniquely yours.
+                </p>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="appointment-right text-center text-lg-end">
+                <a
+                  href="https://wa.me/917351949490?text=Hello%20Utopia%20Team!%20I%20would%20like%20to%20schedule%20a%20consultation%20for%20interior%20design%20services."
+                  target="_blank"
+                  class="btn-primary"
+                >
+                  Book Consultation
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Appointment Section Ends -->
+{% endblock %}

@@ -1,0 +1,23 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+.env
+
+# IDE configurations
+.vscode/
+.idea/
+
+# Database files (local only)
+instance/contacts.db
+*.db
+
+# Vercel output
+.vercel/

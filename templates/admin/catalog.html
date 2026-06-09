@@ -1,0 +1,281 @@
+{% extends 'admin/layout.html' %}
+
+{% block title %}Catalog – PerfectoAdmin{% endblock %}
+
+{% block content %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="admin-alert admin-alert-{{ category }}" style="margin-bottom: 30px;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 5px;">
+        <div>
+            <h1 class="admin-page-title" style="margin-bottom: 2px;">Product Catalog</h1>
+            <p class="admin-page-subtitle" style="margin-bottom: 0;">Manage furniture and decor items.</p>
+        </div>
+        <div>
+            <button class="admin-btn admin-btn-accent" onclick="openAddModal()">
+                <i class="fa-solid fa-plus"></i> Add Product
+            </button>
+        </div>
+    </div>
+
+    {% if products %}
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+            {% for prod in products %}
+                <div class="admin-panel" style="align-items: flex-start; text-align: left; padding: 25px; min-height: auto; border-top: 4px solid var(--admin-accent); position: relative; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.1)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0, 0, 0, 0.05)';">
+                    
+                    <div style="width: 100%; margin-bottom: 15px; border-radius: 8px; overflow: hidden; height: 200px; background-image: url('{{ prod.image_url }}'); background-size: cover; background-position: center;">
+                        <span style="position: absolute; top: 35px; left: 35px; background: rgba(0,0,0,0.7); color: white; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 500;">
+                            {{ prod.category | replace('-', ' ') | title }}
+                        </span>
+                        {% if not prod.in_stock %}
+                        <span style="position: absolute; top: 35px; right: 35px; background: rgba(255, 71, 87, 0.9); color: white; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 500;">
+                            Out of Stock
+                        </span>
+                        {% endif %}
+                    </div>
+                    
+                    <div style="margin-bottom: 15px; width: 100%;">
+                        <strong style="color: var(--admin-accent); font-size: 14px;">Product Name:</strong>
+                        <div style="background: rgba(144, 110, 73, 0.05); padding: 8px 12px; border-radius: 6px; font-size: 16px; font-weight: 600; color: #252525; margin-top: 5px;">
+                            {{ prod.name }}
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px; font-size: 14px; color: #555; background: #fafafa; padding: 10px 15px; border-radius: 8px; border: 1px solid #eee; width: 100%; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center;">
+                        <strong style="color: var(--admin-accent);"><i class="ri-price-tag-3-line"></i> MRP:</strong>
+                        <span style="font-weight: 600; font-size: 16px;">₹{{ prod.mrp | replace('$', '') }}</span>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; width: 100%; margin-top: auto; justify-content: flex-end;">
+                        <button type="button" class="admin-btn edit-btn" 
+                                data-id="{{ prod.id }}"
+                                data-category="{{ prod.category | e }}"
+                                data-name="{{ prod.name | e }}"
+                                data-mrp="{{ prod.mrp | replace('$', '') | e }}"
+                                data-instock="{{ 'true' if prod.in_stock else 'false' }}"
+                                style="box-sizing: border-box; height: 38px; color: #2ed573; border-color: rgba(46, 213, 115, 0.2); background: rgba(46, 213, 115, 0.05); padding: 0 15px; font-weight: 500; transition: all 0.2s; border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; cursor: pointer;" 
+                                onmouseover="this.style.background='#2ed573'; this.style.color='#fff';" 
+                                onmouseout="this.style.background='rgba(46, 213, 115, 0.05)'; this.style.color='#2ed573';">
+                            <i class="ri-edit-line"></i> Edit
+                        </button>
+                        <button type="button" class="admin-btn delete-btn" data-url="{{ url_for('admin_delete_catalog', id=prod.id) }}" style="box-sizing: border-box; height: 38px; color: #ff4757; border-color: rgba(255, 71, 87, 0.2); background: rgba(255, 71, 87, 0.05); padding: 0 15px; font-weight: 500; transition: all 0.2s; border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; border: 1px solid rgba(255, 71, 87, 0.2);" onmouseover="this.style.background='#ff4757'; this.style.color='#fff';" onmouseout="this.style.background='rgba(255, 71, 87, 0.05)'; this.style.color='#ff4757';">
+                            <i class="ri-delete-bin-line"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="admin-panel">
+            <i class="fa-solid fa-couch admin-empty-icon"></i>
+            <div class="admin-empty-text">No Products Found</div>
+        </div>
+    {% endif %}
+
+    <!-- Add/Edit Modal -->
+    <div id="catalogModal" class="admin-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(3px); padding: 15px; box-sizing: border-box;">
+        <div class="admin-login-card" style="width: 100%; max-width: 550px; position: relative; padding: 25px; max-height: 90vh; overflow-y: auto; box-sizing: border-box; background: #fff;">
+            <button type="button" onclick="closeCatalogModal()" style="position: absolute; right: 20px; top: 20px; background: transparent; border: none; font-size: 24px; cursor: pointer; color: var(--admin-text); transition: color 0.2s;" onmouseover="this.style.color='#ff4757';" onmouseout="this.style.color='var(--admin-text)';"><i class="ri-close-line"></i></button>
+            <h2 id="modalTitle" class="admin-page-title" style="margin-bottom: 15px; font-size: 20px;">Add Product</h2>
+            <form id="catalogForm" method="POST" action="{{ url_for('admin_add_catalog') }}" enctype="multipart/form-data">
+                
+                <div class="admin-form-group" style="margin-bottom: 20px; width: 100%;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #252525; text-align: left; font-size: 13px;">Upload Product Image</label>
+                    <div style="position: relative; width: 100%; border: 2px dashed var(--admin-border); border-radius: 8px; padding: 15px; background: #fafafa; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.borderColor='var(--admin-accent)'; this.style.background='rgba(144, 110, 73, 0.02)';" onmouseout="this.style.borderColor='var(--admin-border)'; this.style.background='#fafafa';">
+                        <input type="file" id="prod-image" name="image" accept="image/*" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; opacity: 0; cursor: pointer; z-index: 10;" onchange="document.getElementById('file-name-display').innerText = this.files[0] ? this.files[0].name : 'Choose an image or drag & drop it here'; document.getElementById('file-name-display').style.color = this.files[0] ? 'var(--admin-accent)' : '#888';">
+                        <div style="pointer-events: none; display: flex; align-items: center; gap: 15px;">
+                            <i class="fa-solid fa-cloud-arrow-up" style="font-size: 28px; color: var(--admin-accent);"></i>
+                            <div style="text-align: left;">
+                                <div id="file-name-display" style="font-size: 13px; color: #888; font-weight: 500;">Choose an image or drag & drop it here</div>
+                                <div style="font-size: 11px; color: #aaa; margin-top: 2px;">Supported formats: JPEG, PNG, WEBP</div>
+                            </div>
+                        </div>
+                    </div>
+                    <small id="prod-image-help" style="display: none; color: #666; font-size: 12px; margin-top: 6px;"><i class="fa-solid fa-circle-info text-muted"></i> Leave empty to keep the current image.</small>
+                </div>
+
+                <div class="admin-form-group" style="margin-bottom: 12px; width: 100%;">
+                    <label for="prod-category" style="display: block; margin-bottom: 5px; font-weight: 500; color: #252525; text-align: left; font-size: 13px;">Category</label>
+                    <div style="display: flex; gap: 10px;">
+                        <select id="prod-category" name="category" class="admin-form-control" style="flex: 1; box-sizing: border-box; padding: 10px 35px 10px 12px; font-size: 14px; border-radius: 6px; border: 1px solid var(--admin-border); background-color: #fff; cursor: pointer;" required>
+                            <option value="furniture">Furniture</option>
+                            <option value="home-decor">Home Decor</option>
+                            <option value="outdoor">Outdoor</option>
+                            <option value="accessories">Accessories</option>
+                            <option value="other">Other (Add New)</option>
+                        </select>
+                        <div id="custom-category-container" style="display: none; flex: 1;">
+                            <input type="text" id="custom-category" name="custom_category" class="admin-form-control" placeholder="Enter new category" style="width: 100%; box-sizing: border-box; padding: 10px 12px; font-size: 14px; border-radius: 6px; border: 1px solid var(--admin-border);">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-form-group" style="margin-bottom: 12px; width: 100%;">
+                    <label for="prod-name" style="display: block; margin-bottom: 5px; font-weight: 500; color: #252525; text-align: left; font-size: 13px;">Product Name</label>
+                    <input type="text" id="prod-name" name="name" class="admin-form-control" placeholder='e.g. Modern Sofa' style="width: 100%; box-sizing: border-box; padding: 10px 12px; font-size: 14px; border-radius: 6px; border: 1px solid var(--admin-border);" required>
+                </div>
+
+                <div class="admin-form-group" style="margin-bottom: 12px; width: 100%;">
+                    <label for="prod-mrp" style="display: block; margin-bottom: 5px; font-weight: 500; color: #252525; text-align: left; font-size: 13px;">MRP (Price)</label>
+                    <input type="text" id="prod-mrp" name="mrp" class="admin-form-control" placeholder='e.g. 1,250' style="width: 100%; box-sizing: border-box; padding: 10px 12px; font-size: 14px; border-radius: 6px; border: 1px solid var(--admin-border);" required>
+                </div>
+
+                <div class="admin-form-group" style="margin-bottom: 12px; width: 100%; display: flex; align-items: center; gap: 8px;">
+                    <input type="checkbox" id="prod-instock" name="in_stock" value="on" checked style="width: 16px; height: 16px; cursor: pointer;">
+                    <label for="prod-instock" style="margin-bottom: 0; font-weight: 500; color: #252525; cursor: pointer; font-size: 14px;">In Stock</label>
+                </div>
+
+                <div style="margin-top: 15px; width: 100%;">
+                    <button type="submit" class="admin-btn admin-btn-accent admin-btn-block" style="width: 100%; box-sizing: border-box; padding: 10px; font-size: 15px; margin-top: 0;">
+                        <i class="ri-save-line"></i> Save Product
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="admin-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(3px); padding: 15px; box-sizing: border-box;">
+        <div class="admin-login-card" style="width: 100%; max-width: 400px; position: relative; padding: 30px 25px; box-sizing: border-box; text-align: center; border-radius: 12px; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transform: scale(0.95); transition: transform 0.3s ease;">
+            <div style="font-size: 48px; color: #ff4757; margin-bottom: 15px; line-height: 1;">
+                <i class="ri-error-warning-line"></i>
+            </div>
+            <h2 style="margin-bottom: 10px; font-size: 20px; color: #252525; font-weight: 600;">Confirm Deletion</h2>
+            <p style="margin-bottom: 25px; color: #666; font-size: 14px; line-height: 1.5;">Are you sure you want to delete this product?</p>
+            <form id="deleteForm" method="POST" action="">
+                <div style="display: flex; gap: 12px; justify-content: center;">
+                    <button type="button" class="admin-btn" onclick="closeDeleteModal()" style="padding: 10px 20px; border-radius: 6px; background: #f1f2f6; color: #2f3542; border: 1px solid #dfe4ea; cursor: pointer; font-weight: 500; transition: all 0.2s;" onmouseover="this.style.background='#dfe4ea';" onmouseout="this.style.background='#f1f2f6';">Cancel</button>
+                    <button type="submit" class="admin-btn" style="padding: 10px 20px; border-radius: 6px; background: #ff4757; color: white; border: none; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 6px; transition: all 0.2s;" onmouseover="this.style.background='#ff6b81'; this.style.boxShadow='0 4px 10px rgba(255, 71, 87, 0.3)';" onmouseout="this.style.background='#ff4757'; this.style.boxShadow='none';"><i class="ri-delete-bin-line"></i> Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const editBtns = document.querySelectorAll('.edit-btn');
+            const modal = document.getElementById('catalogModal');
+            const form = document.getElementById('catalogForm');
+            const modalTitle = document.getElementById('modalTitle');
+            
+            editBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.getElementById('prod-image').value = '';
+                    document.getElementById('file-name-display').innerText = 'Choose a new image or drag & drop';
+                    document.getElementById('file-name-display').style.color = '#888';
+                    document.getElementById('prod-image-help').style.display = 'block';
+                    document.getElementById('prod-image').removeAttribute('required');
+                    
+                    let predefinedCategories = ['furniture', 'home-decor', 'outdoor', 'accessories'];
+                    let cat = btn.getAttribute('data-category');
+                    if (predefinedCategories.includes(cat)) {
+                        document.getElementById('prod-category').value = cat;
+                        document.getElementById('custom-category-container').style.display = 'none';
+                        document.getElementById('custom-category').removeAttribute('required');
+                    } else {
+                        document.getElementById('prod-category').value = 'other';
+                        document.getElementById('custom-category-container').style.display = 'block';
+                        // Convert hyphenated back to Title Case for editing
+                        document.getElementById('custom-category').value = cat.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+                        document.getElementById('custom-category').setAttribute('required', 'required');
+                    }
+                    
+                    document.getElementById('prod-name').value = btn.getAttribute('data-name');
+                    document.getElementById('prod-mrp').value = btn.getAttribute('data-mrp');
+                    document.getElementById('prod-instock').checked = btn.getAttribute('data-instock') === 'true';
+                    
+                    form.action = `/admin/catalog/edit/${btn.getAttribute('data-id')}`;
+                    modalTitle.innerText = "Edit Product";
+                    modal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden'; 
+                });
+            });
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeCatalogModal();
+                }
+            });
+
+            const deleteBtns = document.querySelectorAll('.delete-btn');
+            const deleteModal = document.getElementById('deleteModal');
+            const deleteForm = document.getElementById('deleteForm');
+
+            deleteBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    deleteForm.action = btn.getAttribute('data-url');
+                    deleteModal.style.display = 'flex';
+                    setTimeout(() => {
+                        deleteModal.querySelector('.admin-login-card').style.transform = 'scale(1)';
+                    }, 10);
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+
+            deleteModal.addEventListener('click', (e) => {
+                if (e.target === deleteModal) {
+                    closeDeleteModal();
+                }
+            });
+
+            document.getElementById('prod-category').addEventListener('change', function() {
+                if (this.value === 'other') {
+                    document.getElementById('custom-category-container').style.display = 'block';
+                    document.getElementById('custom-category').setAttribute('required', 'required');
+                } else {
+                    document.getElementById('custom-category-container').style.display = 'none';
+                    document.getElementById('custom-category').removeAttribute('required');
+                }
+            });
+        });
+
+        function openAddModal() {
+            const modal = document.getElementById('catalogModal');
+            const form = document.getElementById('catalogForm');
+            const modalTitle = document.getElementById('modalTitle');
+            
+            document.getElementById('prod-image').value = '';
+            document.getElementById('file-name-display').innerText = 'Choose an image or drag & drop it here';
+            document.getElementById('file-name-display').style.color = '#888';
+            document.getElementById('prod-image-help').style.display = 'none';
+            document.getElementById('prod-image').setAttribute('required', 'required');
+            
+            document.getElementById('prod-category').value = 'furniture';
+            document.getElementById('custom-category-container').style.display = 'none';
+            document.getElementById('custom-category').value = '';
+            document.getElementById('custom-category').removeAttribute('required');
+            
+            document.getElementById('prod-name').value = '';
+            document.getElementById('prod-mrp').value = '';
+            document.getElementById('prod-instock').checked = true;
+            
+            form.action = `{{ url_for('admin_add_catalog') }}`;
+            modalTitle.innerText = "Add Product";
+            
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCatalogModal() {
+            document.getElementById('catalogModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function closeDeleteModal() {
+            const deleteModal = document.getElementById('deleteModal');
+            deleteModal.querySelector('.admin-login-card').style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                deleteModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }, 200);
+        }
+    </script>
+{% endblock %}

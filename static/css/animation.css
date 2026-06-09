@@ -1,0 +1,65 @@
+/*------------------------------------------------------------------
+* Project: INTERIOR-PROJECT
+* File:    animation.css — Keyframes & entrance animations
+-------------------------------------------------------------------*/
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Applied by animation.js via IntersectionObserver */
+.fade-in {
+  animation: fadeInUp 0.65s ease both;
+}
+
+/* Image hover zoom */
+.service-box .services-image img,
+.blog-box .blog-image img {
+  transition: transform 0.4s ease;
+}
+.service-box:hover .services-image img,
+.blog-box:hover .blog-image img {
+  transform: scale(1.06);
+}
+
+/* Arrow button hover */
+.service-box .arrow {
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.service-box:hover .arrow {
+  transform: translate(2px, -2px);
+}
+
+/* Banner overlay fade */
+.banner .overlay {
+  animation: fadeIn 1s ease both;
+}
+
+/* Process boxes subtle hover */
+.process-box {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.process-box:hover {
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+  transform: translateY(-3px);
+}
+
+/* Why-us box hover */
+.why-us-box {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.why-us-box:hover {
+  box-shadow: 0 6px 24px rgba(0,0,0,0.07);
+  transform: translateY(-2px);
+}

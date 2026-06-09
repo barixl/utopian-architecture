@@ -1,0 +1,244 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact Us – Utopia Furniture &amp; D&eacute;cor{% endblock %}
+
+{% block styles %}
+  <style>
+    @media (max-width: 1180px) {
+      .slicknav_btn {
+        top: -10px;
+        position: absolute;
+        right: 70px;
+      }
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <!-- Breadcrumb Section Starts -->
+  <section class="breadcrumb position-relative mb-0">
+    <div class="overlay"></div>
+    <div class="container position-absolute top-50 start-50 translate-middle text-center">
+      <div class="breadcrumb-inner mt-8">
+        <h2 class="grey mb-0 w-xl-50 w-md-75 m-auto">Contact Us</h2>
+        <p class="mb-0 text-light mt-2"> <a href="{{ url_for('home') }}" class="text-decoration-none secondary"> Home </a> <span class="mx-2">&rarr;</span> Contact Us </p>
+      </div>
+    </div>
+  </section>
+  <!-- Breadcrumb Section Ends -->
+
+  <!-- Contact Section Starts -->
+  <section class="contact">
+    <div class="container">
+      <div class="contact-inner">
+        <div class="contact-title w-xl-50 w-md-75 m-auto text-center mb-4">
+          <h2 class="mb-0">we love to hear from you, say hi &amp; <span class="secondary">get in touch</span></h2>
+          <p class="mb-0">Have a project in mind? Want to discuss your dream space?
+Whether it's a quick question or a full consultation request,
+we are always happy to connect. Reach out to us today and
+let's start creating something beautiful together.</p>
+        </div>
+        
+        <div class="contact-info mb-5">
+          <div class="row gx-lg-5 gy-4">
+            <div class="col-lg-4 col-md-6 d-flex">
+              <div class="contact-info-box p-4 bg-grey w-100">
+                <ul class="d-flex align-items-center gap-3">
+                  <li><i class="fa fa-map-marker bg-secondary white text-center rounded-circle" aria-hidden="true"></i></li>
+                  <li>
+                    <h4 class="mb-1">Location</h4>
+                    <span>Ansari Road, Muzaffarnagar, Uttar Pradesh, India</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 d-flex">
+              <div class="contact-info-box p-4 bg-grey w-100">
+                <ul class="d-flex align-items-center gap-3">
+                  <li><i class="fa fa-envelope-o bg-secondary white text-center rounded-circle" aria-hidden="true"></i></li>
+                  <li>
+                    <h4 class="mb-1">Email Address</h4>
+                   <span> <a href="mailto:udarchitects9@gmail.com"> udarchitects9@gmail.com </a> </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-4 d-flex">
+              <div class="contact-info-box p-4 bg-grey w-100">
+                <ul class="d-flex align-items-center gap-3">
+                  <li><i class="fa fa-phone bg-secondary white text-center rounded-circle" aria-hidden="true"></i></li>
+                  <li>
+                    <h4 class="mb-1">Contact No.</h4>
+                    <span> <a href="tel:+917351949490"> +91 73519 49490 </a> </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-form">
+          <div class="row gx-lg-5 align-items-center gy-5">
+            <div class="col-lg-6">
+              <div class="contact-form-left">
+                <iframe height="500" class="w-100 d-block" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4912.165520126167!2d77.6972446242993!3d29.47478035857451!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390c1b758d268ff3%3A0xc9d74bfa395b51a3!2sAnsari%20Rd%2C%20Muzaffarnagar%2C%20Uttar%20Pradesh%20251002!5e0!3m2!1sen!2sin!4v1780577865253!5m2!1sen!2sin"></iframe>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="contact-form-right">
+                <h4>Leave A Message</h4>
+                <p class="mb-4">Fill out the form below and our team will get back
+to you within 24 hours. We look forward to hearing
+about your project!</p>
+
+                <!-- Flask Flash Messages Section -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                  {% if messages %}
+                    {% for category, message in messages %}
+                      <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show mb-4" role="alert">
+                        <strong>{{ 'Success!' if category == 'success' else 'Error!' }}</strong> {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
+
+                <form id="contactForm" method="POST" action="{{ url_for('contact') }}">
+                  <div class="row gy-3">
+                    <div class="col-md-6">
+                      <input type="text" name="name" id="full-name" class="w-100 border border-grey" placeholder="Full Name" required>
+                    </div>
+                    <div class="col-md-6">
+                      <input type="email" name="email" id="email" class="w-100 border border-grey" placeholder="Email Address" required>
+                    </div>
+                    <div class="col-lg-12">
+                      <input type="tel" name="phone" id="phone" class="w-100 border border-grey" placeholder="Phone No.">
+                    </div>
+                    <div class="col-lg-12">
+                      <input type="text" name="subject" id="subject" class="w-100 border border-grey" placeholder="Subject">
+                    </div>
+                    <div class="col-12">
+                      <textarea name="message" id="message" placeholder="Message..." rows="4" class="w-100 border border-grey" required></textarea>
+                    </div>
+                    <div class="col-12 text-center">
+                      <button type="submit" class="btn-primary w-100">Send Message</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Contact Section Ends -->
+
+  <!-- Appointment Section Starts -->
+  <div class="appointment py-5 bg-secondarylight">
+    <div class="container">
+      <div class="appointment-inner">
+        <div class="row align-items-center gy-4">
+          <div class="col-lg-3 col-md-4">
+            <div class="appointment-left">
+              <ul class="d-flex align-items-center justify-content-center justify-content-lg-start">
+                <li class="me-3 pe-3 border-end border-2 border-white">
+                  <img src="{{ url_for('static', filename='img/icons/chat.png') }}" alt="chat" style="height: 44px; width: 44px">
+                </li>
+                <li class="teko">
+                  <span class="h6 primary mb-0">Consult Our Studio</span>
+                  <span class="d-block h3 mb-0 text-dark">
+                    <a href="tel:+917351949490" class="text-decoration-none text-dark">
+                      +91 7351949490
+                    </a>
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-8">
+            <div class="appointment-center">
+              <p class="mb-0">
+                Ready to transform your space? Meet with our principal
+                designers to share your vision and start crafting a home that
+                is uniquely yours.
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="appointment-right text-center text-lg-end">
+              <a href="https://wa.me/917351949490?text=Hello%20Utopia%20Team!%20I%20would%20like%20to%20schedule%20a%20consultation%20for%20interior%20design%20services." target="_blank" class="btn-primary">
+                Book Consultation
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Appointment Section Ends -->
+
+  <!-- Success Modal -->
+  <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content text-center p-4">
+        <div class="modal-body">
+          <div class="mb-3">
+            <i class="fa fa-check-circle text-success" style="font-size: 3rem;"></i>
+          </div>
+          <h5 class="modal-title mb-2" id="successModalLabel">Success!</h5>
+          <p class="mb-4">Your message has been sent successfully!</p>
+          <button type="button" class="btn btn-primary px-4 py-2" data-bs-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+      contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const submitBtn = contactForm.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Sending...';
+        submitBtn.disabled = true;
+
+        const formData = new FormData(contactForm);
+
+        fetch(contactForm.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+          
+          if (data.status === 'success') {
+            contactForm.reset();
+            const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+            successModal.show();
+          } else {
+            alert(data.message || 'Something went wrong. Please try again.');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+          alert('An error occurred. Please try again later.');
+        });
+      });
+    }
+  });
+</script>
+{% endblock %}
