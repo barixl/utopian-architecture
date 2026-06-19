@@ -82,143 +82,135 @@ class GalleryImage(db.Model):
     def __repr__(self):
         return f"<GalleryImage {self.id} - {self.category}>"
 
-# Create the SQLite tables on application startup
-with app.app_context():
-    db.create_all()
-    
-    # Ensure gallery_images column exists in SQLite table
-    try:
-        db.session.execute(db.text("SELECT gallery_images FROM catalog_products LIMIT 1"))
-    except Exception:
-        db.session.rollback()
+if os.getenv('FLASK_ENV') != 'production':
+    with app.app_context():
+        db.create_all()
+
+        # Ensure gallery_images column exists in SQLite table
         try:
-            db.session.execute(db.text("ALTER TABLE catalog_products ADD COLUMN gallery_images TEXT"))
-            db.session.commit()
-            print("Successfully added gallery_images column to catalog_products table.")
-        except Exception as e:
+            db.session.execute(db.text("SELECT gallery_images FROM catalog_products LIMIT 1"))
+        except Exception:
             db.session.rollback()
-            print(f"Error migrating database: {e}")
-    
-    # Seed default sliders if the table is empty
-    if HeroSlider.query.count() == 0:
-        default_sliders = [
-            {
-                "image_url": "/static/img/hero/banner-1.jpg",
-                "heading": 'MAKE YOUR <span class="secondary">HOME</span><br />FEEL LIKE <span class="secondary">HOME</span>',
-                "sub_text": 'Your space should tell your story. We carefully blend textures, colors, and lighting to create interiors that bring comfort, warmth, and character — a perfect backdrop for moments and memories that matter.'
-            },
-            {
-                "image_url": "https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1920&q=80",
-                "heading": 'LUXURY <span class="secondary">DESIGN</span><br />FOR MODERN <span class="secondary">LIVING</span>',
-                "sub_text": 'Experience unparalleled elegance and sophistication. We specialize in crafting modern, bespoke interiors that elevate your lifestyle with premium furnishings and exquisite finishes.'
-            },
-            {
-                "image_url": "https://images.pexels.com/photos/2988860/pexels-photo-2988860.jpeg?auto=compress&cs=tinysrgb&w=1920&q=80",
-                "heading": 'CUSTOM <span class="secondary">FURNITURE</span><br />& OUTDOOR <span class="secondary">WORKS</span>',
-                "sub_text": 'Transform your spaces with bespoke solutions. From expertly crafted custom furniture to stunning pergolas and outdoor retreats, we bring visionary designs to life.'
-            }
-        ]
-        for slide_data in default_sliders:
-            new_slide = HeroSlider(**slide_data)
-            db.session.add(new_slide)
-            
-    # Seed default catalog products if the table is empty
-    if CatalogProduct.query.count() == 0:
-        default_products = [
-            {
-                "category": "furniture",
-                "name": "Modern Sofa",
-                "mrp": "$1,250",
-                "image_url": "/static/img/products/sectional2.webp",
-                "short_description": "A stylish and comfortable 3-seater sofa with premium fabric upholstery, perfect for modern living rooms.",
-                "description": "Elevate your living space with our premium Modern Sofa. Crafted with a solid hardwood frame, high-density foam cushioning, and upholstered in a luxurious, durable fabric, this sofa offers both exceptional comfort and contemporary style. Designed to fit seamlessly into modern apartments or houses, it features clean lines, sleek steel legs, and soft armrests."
-            },
-            {
-                "category": "furniture",
-                "name": "Luxury Dining Table",
-                "mrp": "$2,400",
-                "image_url": "/static/img/products/Dining.webp",
-                "short_description": "Elegant 6-seater wooden dining table with a polished marble top and sturdy timber legs.",
-                "description": "Host unforgettable dinners with the Luxury Dining Table. Featuring a stunning natural marble top with unique veining patterns and supported by a robust solid oak frame, this table blends strength with sheer elegance. Comfortably seating up to six guests, it serves as a stunning centerpiece for any modern dining area."
-            },
-            {
-                "category": "outdoor",
-                "name": "Outdoor Pergola",
-                "mrp": "$3,800",
-                "image_url": "/static/img/products/Outdoor_Pergola.webp",
-                "short_description": "Weather-resistant wooden outdoor pergola, ideal for gardens, patios, and terrace decks.",
-                "description": "Transform your outdoor living area with our custom wooden Pergola. Made from premium, weather-treated teak wood, this pergola provides a perfect balance of shade and sunshine. Whether set up in a garden, by the pool, or on a spacious terrace, it creates a cozy, elegant outdoor retreat perfect for relaxing or entertaining guests."
-            },
-            {
-                "category": "home-decor",
-                "name": "Minimal Table Lamp",
-                "mrp": "$180",
-                "image_url": "/static/img/products/Minimal.webp",
-                "short_description": "A sleek, minimalist ceramic table lamp providing warm ambient lighting.",
-                "description": "Bring warmth and sophisticated style to your bedside table or desk with the Minimal Table Lamp. Its geometric ceramic base paired with a textured fabric drum shade creates a soft, diffused glow. Equipped with energy-efficient LED compatibility, it features a clean white matte finish that complements any modern minimalist decor."
-            },
-            {
-                "category": "home-decor",
-                "name": "Luxury Wall Mirror",
-                "mrp": "$420",
-                "image_url": "/static/img/products/Luxury_Wall_Mirror.webp",
-                "short_description": "A large statement wall mirror with a bespoke brushed brass frame.",
-                "description": "Make your rooms feel larger and brighter with this gorgeous Luxury Wall Mirror. Hand-finished with a premium brushed brass frame, its clean round design adds a modern architectural touch to entryways, bedrooms, or living spaces. Featuring distortion-free high-definition glass, it serves as both a functional mirror and a striking piece of wall art."
-            },
-            {
-                "category": "accessories",
-                "name": "Decorative Vase Set",
-                "mrp": "$140",
-                "image_url": "/static/img/products/Decorative.webp",
-                "short_description": "A trio of hand-painted matte ceramic vases in earth tones.",
-                "description": "Add an artistic touch to your shelves, console tables, or mantels with the Decorative Vase Set. This collection of three textured ceramic vases features varying heights and organic shapes, finished in a harmonious earthy color palette. Perfect for displaying dry botanicals, pampas grass, or standing alone as modern sculptural accents."
-            }
-        ]
-        for prod_data in default_products:
-            db.session.add(CatalogProduct(**prod_data))
-            
-    db.session.commit()
+            try:
+                db.session.execute(db.text("ALTER TABLE catalog_products ADD COLUMN gallery_images TEXT"))
+                db.session.commit()
+            except Exception as e:
+                db.session.rollback()
 
-    # Seed/Update gallery images for default products
-    default_gallery_images = {
-        "Modern Sofa": "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1484101403633-562f891dc89a?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=800&q=80",
-        "Luxury Dining Table": "https://images.unsplash.com/photo-1615066390971-03e4e1c36ddf?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1577140917170-285929fb55b7?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1604014237800-1c9102c219da?auto=format&fit=crop&w=800&q=80",
-        "Outdoor Pergola": "https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=800&q=80",
-        "Minimal Table Lamp": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1540932239986-30128078f3c5?auto=format&fit=crop&w=800&q=80",
-        "Luxury Wall Mirror": "https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=800&q=80",
-        "Decorative Vase Set": "https://images.unsplash.com/photo-1578500494198-246f612d3b3d?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=800&q=80"
-    }
-    for name, gallery_str in default_gallery_images.items():
-        prod = CatalogProduct.query.filter_by(name=name).first()
-        if prod:
-            prod.gallery_images = gallery_str
-    db.session.commit()
+        if HeroSlider.query.count() == 0:
+            default_sliders = [
+                {
+                    "image_url": "/static/img/hero/banner-1.jpg",
+                    "heading": 'MAKE YOUR <span class="secondary">HOME</span><br />FEEL LIKE <span class="secondary">HOME</span>',
+                    "sub_text": 'Your space should tell your story. We carefully blend textures, colors, and lighting to create interiors that bring comfort, warmth, and character — a perfect backdrop for moments and memories that matter.'
+                },
+                {
+                    "image_url": "https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1920&q=80",
+                    "heading": 'LUXURY <span class="secondary">DESIGN</span><br />FOR MODERN <span class="secondary">LIVING</span>',
+                    "sub_text": 'Experience unparalleled elegance and sophistication. We specialize in crafting modern, bespoke interiors that elevate your lifestyle with premium furnishings and exquisite finishes.'
+                },
+                {
+                    "image_url": "https://images.pexels.com/photos/2988860/pexels-photo-2988860.jpeg?auto=compress&cs=tinysrgb&w=1920&q=80",
+                    "heading": 'CUSTOM <span class="secondary">FURNITURE</span><br />& OUTDOOR <span class="secondary">WORKS</span>',
+                    "sub_text": 'Transform your spaces with bespoke solutions. From expertly crafted custom furniture to stunning pergolas and outdoor retreats, we bring visionary designs to life.'
+                }
+            ]
+            for slide_data in default_sliders:
+                db.session.add(HeroSlider(**slide_data))
 
-    # Seed default gallery images if table is empty
-    if GalleryImage.query.count() == 0:
-        gallery_dir = os.path.join(app.static_folder, 'img', 'gallery')
-        categories_map = {
-            'living_room': 'living-room',
-            'bedroom': 'bedroom',
-            'kitchen': 'kitchen',
-            'office': 'office',
-            'sofaset': 'sofaset',
-            'other': 'other'
-        }
-        for dir_name, filter_class in categories_map.items():
-            cat_dir = os.path.join(gallery_dir, dir_name)
-            if os.path.exists(cat_dir):
-                for file in os.listdir(cat_dir):
-                    if file.lower().endswith(('.png', '.jpg', '.jpeg', '.webp')):
-                        alt_text = file.split('.')[0].replace('_', ' ').replace('-', ' ').title()
-                        image_url = f"/static/img/gallery/{dir_name}/{file}"
-                        new_gallery_img = GalleryImage(
-                            category=filter_class,
-                            image_url=image_url,
-                            alt_text=alt_text
-                        )
-                        db.session.add(new_gallery_img)
+        if CatalogProduct.query.count() == 0:
+            default_products = [
+                {
+                    "category": "furniture",
+                    "name": "Modern Sofa",
+                    "mrp": "$1,250",
+                    "image_url": "/static/img/products/sectional2.webp",
+                    "short_description": "A stylish and comfortable 3-seater sofa with premium fabric upholstery, perfect for modern living rooms.",
+                    "description": "Elevate your living space with our premium Modern Sofa. Crafted with a solid hardwood frame, high-density foam cushioning, and upholstered in a luxurious, durable fabric, this sofa offers both exceptional comfort and contemporary style. Designed to fit seamlessly into modern apartments or houses, it features clean lines, sleek steel legs, and soft armrests."
+                },
+                {
+                    "category": "furniture",
+                    "name": "Luxury Dining Table",
+                    "mrp": "$2,400",
+                    "image_url": "/static/img/products/Dining.webp",
+                    "short_description": "Elegant 6-seater wooden dining table with a polished marble top and sturdy timber legs.",
+                    "description": "Host unforgettable dinners with the Luxury Dining Table. Featuring a stunning natural marble top with unique veining patterns and supported by a robust solid oak frame, this table blends strength with sheer elegance. Comfortably seating up to six guests, it serves as a stunning centerpiece for any modern dining area."
+                },
+                {
+                    "category": "outdoor",
+                    "name": "Outdoor Pergola",
+                    "mrp": "$3,800",
+                    "image_url": "/static/img/products/Outdoor_Pergola.webp",
+                    "short_description": "Weather-resistant wooden outdoor pergola, ideal for gardens, patios, and terrace decks.",
+                    "description": "Transform your outdoor living area with our custom wooden Pergola. Made from premium, weather-treated teak wood, this pergola provides a perfect balance of shade and sunshine. Whether set up in a garden, by the pool, or on a spacious terrace, it creates a cozy, elegant outdoor retreat perfect for relaxing or entertaining guests."
+                },
+                {
+                    "category": "home-decor",
+                    "name": "Minimal Table Lamp",
+                    "mrp": "$180",
+                    "image_url": "/static/img/products/Minimal.webp",
+                    "short_description": "A sleek, minimalist ceramic table lamp providing warm ambient lighting.",
+                    "description": "Bring warmth and sophisticated style to your bedside table or desk with the Minimal Table Lamp. Its geometric ceramic base paired with a textured fabric drum shade creates a soft, diffused glow. Equipped with energy-efficient LED compatibility, it features a clean white matte finish that complements any modern minimalist decor."
+                },
+                {
+                    "category": "home-decor",
+                    "name": "Luxury Wall Mirror",
+                    "mrp": "$420",
+                    "image_url": "/static/img/products/Luxury_Wall_Mirror.webp",
+                    "short_description": "A large statement wall mirror with a bespoke brushed brass frame.",
+                    "description": "Make your rooms feel larger and brighter with this gorgeous Luxury Wall Mirror. Hand-finished with a premium brushed brass frame, its clean round design adds a modern architectural touch to entryways, bedrooms, or living spaces. Featuring distortion-free high-definition glass, it serves as both a functional mirror and a striking piece of wall art."
+                },
+                {
+                    "category": "accessories",
+                    "name": "Decorative Vase Set",
+                    "mrp": "$140",
+                    "image_url": "/static/img/products/Decorative.webp",
+                    "short_description": "A trio of hand-painted matte ceramic vases in earth tones.",
+                    "description": "Add an artistic touch to your shelves, console tables, or mantels with the Decorative Vase Set. This collection of three textured ceramic vases features varying heights and organic shapes, finished in a harmonious earthy color palette. Perfect for displaying dry botanicals, pampas grass, or standing alone as modern sculptural accents."
+                }
+            ]
+            for prod_data in default_products:
+                db.session.add(CatalogProduct(**prod_data))
+
         db.session.commit()
+
+        default_gallery_images = {
+            "Modern Sofa": "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1484101403633-562f891dc89a?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=800&q=80",
+            "Luxury Dining Table": "https://images.unsplash.com/photo-1615066390971-03e4e1c36ddf?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1577140917170-285929fb55b7?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1604014237800-1c9102c219da?auto=format&fit=crop&w=800&q=80",
+            "Outdoor Pergola": "https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=800&q=80",
+            "Minimal Table Lamp": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1540932239986-30128078f3c5?auto=format&fit=crop&w=800&q=80",
+            "Luxury Wall Mirror": "https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=800&q=80",
+            "Decorative Vase Set": "https://images.unsplash.com/photo-1578500494198-246f612d3b3d?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?auto=format&fit=crop&w=800&q=80,https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=800&q=80"
+        }
+        for name, gallery_str in default_gallery_images.items():
+            prod = CatalogProduct.query.filter_by(name=name).first()
+            if prod:
+                prod.gallery_images = gallery_str
+        db.session.commit()
+
+        if GalleryImage.query.count() == 0:
+            gallery_dir = os.path.join(app.static_folder, 'img', 'gallery')
+            categories_map = {
+                'living_room': 'living-room',
+                'bedroom': 'bedroom',
+                'kitchen': 'kitchen',
+                'office': 'office',
+                'sofaset': 'sofaset',
+                'other': 'other'
+            }
+            for dir_name, filter_class in categories_map.items():
+                cat_dir = os.path.join(gallery_dir, dir_name)
+                if os.path.exists(cat_dir):
+                    for file in os.listdir(cat_dir):
+                        if file.lower().endswith(('.png', '.jpg', '.jpeg', '.webp')):
+                            alt_text = file.split('.')[0].replace('_', ' ').replace('-', ' ').title()
+                            image_url = f"/static/img/gallery/{dir_name}/{file}"
+                            db.session.add(GalleryImage(
+                                category=filter_class,
+                                image_url=image_url,
+                                alt_text=alt_text
+                            ))
+            db.session.commit()
 
 # --- USER ROUTES ---
 
