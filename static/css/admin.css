@@ -363,7 +363,7 @@ body.admin-body {
   }
   
   .admin-brand span {
-    display: none; /* Hide 'PerfectoAdmin' text on small screens, keep icon */
+    display: none; /* Hide 'UtopiaAdmin' text on small screens, keep icon */
   }
 
   .admin-sidebar-toggle {

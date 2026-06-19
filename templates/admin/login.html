@@ -3,20 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login – PerfectoAdmin</title>
+    <title>Login – UtopiaAdmin</title>
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom Admin CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}?v=1.1">
+    <style>
+        :root {
+            --admin-bg: #f8fafc;
+            --admin-surface: #ffffff;
+            --admin-border: #e2e8f0;
+            --admin-text: #1e293b;
+            --admin-text-light: #64748b;
+            --admin-accent: #906e49;
+            --admin-accent-hover: #252525;
+            --admin-danger: #ef4444;
+        }
+        body {
+            background-color: var(--admin-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .login-card {
+            background: var(--admin-surface);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 400px;
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .login-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--admin-text);
+            margin-bottom: 0.5rem;
+        }
+        .login-header i {
+            font-size: 2rem;
+            color: var(--admin-accent);
+            margin-bottom: 1rem;
+        }
+        .login-header h2 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .login-header h2 i {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        .login-header p {
+            color: var(--admin-text-light);
+            font-size: 0.95rem;
+        }
+        .form-control {
+            background-color: #f1f5f9;
+            border: 1px solid transparent;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .form-control:focus {
+            background-color: var(--admin-surface);
+            border-color: var(--admin-accent);
+            box-shadow: 0 0 0 3px rgba(144, 110, 73, 0.1);
+        }
+        .btn-primary {
+            background-color: var(--admin-accent);
+            border: none;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-weight: 500;
+            width: 100%;
+            margin-top: 1rem;
+            transition: background-color 0.2s;
+        }
+        .btn-primary:hover {
+            background-color: var(--admin-accent-hover);
+        }
+        .alert {
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border: none;
+        }
+        .alert-danger {
+            background-color: #fef2f2;
+            color: #991b1b;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--admin-text-light);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .back-link:hover {
+            color: var(--admin-accent);
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body class="admin-body">
 
-    <div class="admin-login-wrapper">
-        <div class="admin-login-card">
-            <div class="admin-login-title">
-                <h2><i class="fa-solid fa-layer-group" style="color: var(--admin-accent);"></i> PerfectoAdmin</h2>
+    <div class="login-card">
+        <div class="login-header">
+            <div style="margin-bottom: 15px;">
+                <h2><i class="fa-solid fa-layer-group" style="color: var(--admin-accent);"></i> UtopiaAdmin</h2>
             </div>
             
             {% with messages = get_flashed_messages(with_categories=true) %}
