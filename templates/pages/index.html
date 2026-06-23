@@ -269,6 +269,11 @@ endblock %} {% block content %}
     right: 10px;
   }
 }
+
+/* Home Page specific SlickNav adjustment */
+.home-3 .slicknav_btn {
+  margin-top: 7px !important;
+}
 </style>
 
 <section class="best-selling-categories py-5 bg-white">
@@ -675,8 +680,8 @@ endblock %} {% block content %}
       <!-- Sticky Container Starts -->
       <div class="sticky-products-container">
         <!-- Category Filters (Sticky) -->
-        <div class="decor-filters-wrapper sticky-top mb-5 text-center" style="z-index: 999; top: 80px; transition: all 0.3s ease;" id="decor-filters-wrapper">
-          <div class="decor-filters flex-wrap justify-content-center gap-2 py-2 px-4" id="decor-filters" style="border-radius: 50px; display: inline-flex; transition: all 0.3s ease;">
+        <div class="decor-filters-wrapper sticky-top mb-5 text-center">
+          <div class="decor-filters d-inline-flex flex-wrap justify-content-center gap-2 py-2 px-4">
             <button class="decor-filter-btn active" data-filter="all">
               All
             </button>
@@ -772,15 +777,54 @@ endblock %} {% block content %}
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
   }
-  #decor-filters.is-sticky {
-    background-color: #ffffff;
+  .decor-filters-wrapper {
+    z-index: 2;
+    top: 80px;
+  }
+  .decor-filters {
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+  }
+  .decor-filters.decor-filters-stuck {
+    background-color: #ffffff !important;
     box-shadow: 0 4px 25px rgba(0,0,0,0.08);
-    border: 1px solid #f1f1f1;
+    border-color: #f1f1f1 !important;
+  }
+  
+  /* Mobile Responsive Overrides */
+  @media (max-width: 768px) {
+    .decor-filters-wrapper {
+      top: 50px !important;
+    }
+    .decor-filters {
+      border-radius: 5px !important;
+      padding-left: 10px !important;
+      padding-right: 10px !important;
+    }
+    .decor-filter-btn {
+      font-size: 13px !important;
+      padding: 6px 12px !important;
+    }
   }
 </style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  const stickyWrapper = document.querySelector('.decor-filters-wrapper');
+  const filtersContainer = document.querySelector('.decor-filters');
+
+  window.addEventListener('scroll', function() {
+    if (stickyWrapper && filtersContainer) {
+      const computedTop = parseInt(window.getComputedStyle(stickyWrapper).top, 10) || 80;
+      if (stickyWrapper.getBoundingClientRect().top <= computedTop + 1) {
+        filtersContainer.classList.add('decor-filters-stuck');
+      } else {
+        filtersContainer.classList.remove('decor-filters-stuck');
+      }
+    }
+  });
+
   const filterBtns = document.querySelectorAll('.decor-filter-btn');
   const allProducts = Array.from(document.querySelectorAll('.decor-product-item'));
   const loadMoreBtn = document.getElementById('load-more-btn');
@@ -852,20 +896,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Initial setup call
   updateProducts(false);
-
-  // Sticky background logic
-  const filtersWrapper = document.getElementById('decor-filters-wrapper');
-  const filtersContainer = document.getElementById('decor-filters');
-  
-  if (filtersWrapper && filtersContainer) {
-    window.addEventListener('scroll', function() {
-      if (filtersWrapper.getBoundingClientRect().top <= 81) {
-        filtersContainer.classList.add('is-sticky');
-      } else {
-        filtersContainer.classList.remove('is-sticky');
-      }
-    }, { passive: true });
-  }
 });
 </script>
 <!-- Shop Section Ends -->
